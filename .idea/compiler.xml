@@ -9,5 +9,8 @@
         <module name="drs" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="drs" target="1.8" />
+    </bytecodeTargetLevel>
   </component>
 </project>
