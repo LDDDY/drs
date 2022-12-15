@@ -22,21 +22,21 @@ public class TermFrequencyTest {
 
         Configuration conf = cb.getConf();
 
-        Job jobTermFrequency = Job.getInstance(cb.getConf());
+        Job jobTF = Job.getInstance(cb.getConf());
 
-        jobTermFrequency.setJarByClass(TermFrequency.class);
-        jobTermFrequency.setMapperClass(TermFrequency.TermFrequencyMapper.class);
-        jobTermFrequency.setReducerClass(TermFrequency.TermFrequencyReducer.class);
+        jobTF.setJarByClass(TermFrequency.class);
+        jobTF.setMapperClass(TermFrequency.TermFrequencyMapper.class);
+        jobTF.setReducerClass(TermFrequency.TermFrequencyReducer.class);
 
-        jobTermFrequency.setMapOutputKeyClass(Text.class);
-        jobTermFrequency.setMapOutputValueClass(IntWritable.class);
+        jobTF.setMapOutputKeyClass(Text.class);
+        jobTF.setMapOutputValueClass(IntWritable.class);
 
-        jobTermFrequency.setOutputKeyClass(Text.class);
-        jobTermFrequency.setOutputValueClass(Text.class);
+        jobTF.setOutputKeyClass(Text.class);
+        jobTF.setOutputValueClass(Text.class);
 
-        FileInputFormat.addInputPath(jobTermFrequency, new Path(Paths.PREPROCESSED_DATA));
-        FileOutputFormat.setOutputPath(jobTermFrequency, new Path(Paths.TF_OUTPUT));
+        FileInputFormat.addInputPath(jobTF, new Path(Paths.PREPROCESSED_DATA));
+        FileOutputFormat.setOutputPath(jobTF, new Path(Paths.TF_OUTPUT));
 
-        System.exit(jobTermFrequency.waitForCompletion(true)?0:1);
+        System.exit(jobTF.waitForCompletion(true)?0:1);
     }
 }

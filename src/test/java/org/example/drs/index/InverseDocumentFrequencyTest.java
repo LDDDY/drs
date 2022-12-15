@@ -21,21 +21,21 @@ public class InverseDocumentFrequencyTest {
 
         Configuration conf = cb.getConf();
 
-        Job jobTermFrequency = Job.getInstance(cb.getConf());
+        Job jobIDF = Job.getInstance(cb.getConf());
 
-        jobTermFrequency.setJarByClass(InverseDocumentFrequency.class);
-        jobTermFrequency.setMapperClass(InverseDocumentFrequency.InverseDocumentFrequencyMapper.class);
-        jobTermFrequency.setReducerClass(InverseDocumentFrequency.InverseDocumentFrequencyReducer.class);
+        jobIDF.setJarByClass(InverseDocumentFrequency.class);
+        jobIDF.setMapperClass(InverseDocumentFrequency.InverseDocumentFrequencyMapper.class);
+        jobIDF.setReducerClass(InverseDocumentFrequency.InverseDocumentFrequencyReducer.class);
 
-        jobTermFrequency.setMapOutputKeyClass(Text.class);
-        jobTermFrequency.setMapOutputValueClass(IntWritable.class);
+        jobIDF.setMapOutputKeyClass(Text.class);
+        jobIDF.setMapOutputValueClass(IntWritable.class);
 
-        jobTermFrequency.setOutputKeyClass(Text.class);
-        jobTermFrequency.setOutputValueClass(Text.class);
+        jobIDF.setOutputKeyClass(Text.class);
+        jobIDF.setOutputValueClass(Text.class);
 
-        FileInputFormat.addInputPath(jobTermFrequency, new Path(Paths.PREPROCESSED_DATA));
-        FileOutputFormat.setOutputPath(jobTermFrequency, new Path(Paths.IDF_OUTPUT));
+        FileInputFormat.addInputPath(jobIDF, new Path(Paths.PREPROCESSED_DATA));
+        FileOutputFormat.setOutputPath(jobIDF, new Path(Paths.IDF_OUTPUT));
 
-        System.exit(jobTermFrequency.waitForCompletion(true)?0:1);
+        System.exit(jobIDF.waitForCompletion(true)?0:1);
     }
 }
