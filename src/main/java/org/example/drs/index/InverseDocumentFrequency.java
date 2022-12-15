@@ -2,10 +2,16 @@ package org.example.drs.index;
 
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.Mapper;
 import org.apache.hadoop.mapreduce.Reducer;
+import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
+import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
+import org.example.drs.shared.PathsInHDFS;
 import org.example.drs.shared.Values;
 
 import java.io.IOException;
@@ -17,7 +23,6 @@ public class InverseDocumentFrequency {
             extends Mapper<Object, Text, Text, IntWritable> {
         /**
          * map
-         * @param key default
          * @param value json object from Path.PREPROCESSED_DATA
          * @param context key-out: "word"
          *                value-out: 1
@@ -64,5 +69,26 @@ public class InverseDocumentFrequency {
             String valueOut = "," + IDF;
             context.write(key, new Text(valueOut));
         }
+    }
+
+    public static boolean runIDFCounter(Configuration conf)
+            throws IOException, InterruptedException, ClassNotFoundException {
+
+        Job jobIDF = Job.getInstance(conf);
+
+        jobIDF.setJarByClass(InverseDocumentFrequency.class);
+        jobIDF.setMapperClass(InverseDocumentFrequency.InverseDocumentFrequencyMapper.class);
+        jobIDF.setReducerClass(InverseDocumentFrequency.InverseDocumentFrequencyReducer.class);
+
+        jobIDF.setMapOutputKeyClass(Text.class);
+        jobIDF.setMapOutputValueClass(IntWritable.class);
+
+        jobIDF.setOutputKeyClass(Text.class);
+        jobIDF.setOutputValueClass(Text.class);
+
+        FileInputFormat.addInputPath(jobIDF, new Path(PathsInHDFS.PREPROCESSED_DATA));
+        FileOutputFormat.setOutputPath(jobIDF, new Path(PathsInHDFS.IDF_OUTPUT));
+
+        return jobIDF.waitForCompletion(true);
     }
 }

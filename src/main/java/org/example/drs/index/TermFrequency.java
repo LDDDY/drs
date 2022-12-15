@@ -2,10 +2,16 @@ package org.example.drs.index;
 
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.Mapper;
 import org.apache.hadoop.mapreduce.Reducer;
+import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
+import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
+import org.example.drs.shared.PathsInHDFS;
 
 import java.io.IOException;
 import java.util.StringTokenizer;
@@ -19,7 +25,6 @@ public class TermFrequency {
 
         /**
          * map
-         * @param key key-in: default
          * @param value value-in: json object from Path.PREPROCESSED_DATA
          * @param context key-out: "word,docIdentifier"
          *                value-out: 1
@@ -72,5 +77,26 @@ public class TermFrequency {
                 context.write(outKey, outVal);
             }
         }
+    }
+
+    public static boolean runTFCounter(Configuration conf)
+            throws IOException, InterruptedException, ClassNotFoundException {
+
+        Job jobTF = Job.getInstance(conf);
+
+        jobTF.setJarByClass(TermFrequency.class);
+        jobTF.setMapperClass(TermFrequency.TermFrequencyMapper.class);
+        jobTF.setReducerClass(TermFrequency.TermFrequencyReducer.class);
+
+        jobTF.setMapOutputKeyClass(Text.class);
+        jobTF.setMapOutputValueClass(IntWritable.class);
+
+        jobTF.setOutputKeyClass(Text.class);
+        jobTF.setOutputValueClass(Text.class);
+
+        FileInputFormat.addInputPath(jobTF, new Path(PathsInHDFS.PREPROCESSED_DATA));
+        FileOutputFormat.setOutputPath(jobTF, new Path(PathsInHDFS.TF_OUTPUT));
+
+        return jobTF.waitForCompletion(true);
     }
 }

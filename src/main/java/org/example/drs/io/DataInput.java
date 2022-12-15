@@ -9,13 +9,7 @@ import java.util.Map;
 
 public class DataInput {
 
-//    private static DataInput singletonDataInput = null;
-    private static String datasetPath;
     private static int count = 0;
-
-//    private DataInput(String dataPath) {
-//        this.datasetPath = dataPath;
-//    }
 
     public static void writeJson(String jsonPath, Map<String, Object> fileMap, boolean flag) throws Exception{
         String data = new JSONObject(fileMap).toString();
@@ -30,7 +24,7 @@ public class DataInput {
         bufferedWriter.close();
     }
 
-    public static List<Map<String,Object>> getFileMap() throws Exception{
+    public static List<Map<String,Object>> getFileMap(String datasetPath) throws Exception{
         File file = new File(datasetPath);
         File[] fileList = file.listFiles();
         List<Map<String,Object>> fileMaps = new ArrayList<>();
@@ -49,8 +43,6 @@ public class DataInput {
                     //System.out.println(fileList2[j]);
                     String name = fileList2[j].toString();
                     int nameStart = name.lastIndexOf("/");
-//                    int nameEnd = name.lastIndexOf(".");
-//                    name = name.substring(nameStart+1, nameEnd);
                     name = name.substring(nameStart+1); //取文件名作为name
                     Map<String,Object> fileMap = new LinkedHashMap<>();
                     BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(fileList2[j]),"utf-8"));
@@ -85,11 +77,10 @@ public class DataInput {
      * @param dataPath 原数据即路径
      * @param outPath 输出预处理文件的路径
      * @return 原数据集的文档总数
-     * @throws Exception
      */
     public static int preprocess(String dataPath, String outPath) throws Exception {
 
-        List<Map<String,Object>> fileMaps=getFileMap();
+        List<Map<String,Object>> fileMaps=getFileMap(dataPath);
         int counter = 0;
         File jsonFile = new File(outPath);
         for (Map<String,Object> fileMap:fileMaps){

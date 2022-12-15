@@ -10,5 +10,7 @@ public class JSONTest {
         System.out.println(data.getString("category"));
         System.out.println(data.getString(""));
 
+        System.out.println(data.toString());
+
     }
 }

@@ -7,7 +7,7 @@ import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.example.drs.shared.ConfigurationBuilder;
-import org.example.drs.shared.Paths;
+import org.example.drs.shared.PathsInHDFS;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -31,10 +31,10 @@ public class WeightingTest {
         jobWeighting.setOutputKeyClass(Text.class);
         jobWeighting.setOutputValueClass(Text.class);
 
-        FileInputFormat.addInputPath(jobWeighting, new Path(Paths.TF_OUTCOME));
-        FileInputFormat.addInputPath(jobWeighting, new Path(Paths.IDF_OUTCOME));
+        FileInputFormat.addInputPath(jobWeighting, new Path(PathsInHDFS.TF_OUTCOME));
+        FileInputFormat.addInputPath(jobWeighting, new Path(PathsInHDFS.IDF_OUTCOME));
 
-        FileOutputFormat.setOutputPath(jobWeighting, new Path(Paths.TF_IDF_OUTPUT));
+        FileOutputFormat.setOutputPath(jobWeighting, new Path(PathsInHDFS.TF_IDF_OUTPUT));
 
         System.exit(jobWeighting.waitForCompletion(true)?0:1);
     }

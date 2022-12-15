@@ -1,13 +1,13 @@
 package org.example.drs.io;
 
 import org.example.drs.shared.ConfigurationBuilder;
-import org.example.drs.shared.Paths;
+import org.example.drs.shared.PathsInHDFS;
 
 import java.io.IOException;
 
 public class DownloadTest {
     public static void main(String[] args) throws IOException {
         ConfigurationBuilder cb = new ConfigurationBuilder();
-        DataDownloader.downloadFromHDFS("outcome", Paths.TF_IDF_OUTCOME, cb.getConf());
+        DataDownloader.downloadFromHDFS("outcome", PathsInHDFS.DOC_VECTOR_OUTCOME, cb.getConf());
     }
 }

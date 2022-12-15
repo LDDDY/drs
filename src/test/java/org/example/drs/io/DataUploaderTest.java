@@ -2,7 +2,7 @@ package org.example.drs.io;
 
 
 import org.apache.hadoop.conf.Configuration;
-import org.example.drs.shared.Paths;
+import org.example.drs.shared.PathsInHDFS;
 import org.junit.Test;
 import org.junit.runner.JUnitCore;
 import org.junit.runner.Result;
@@ -25,7 +25,7 @@ public class DataUploaderTest {
 
         String path = "dataset/preprocessedData";
 
-        boolean b = DataUploader.uploadToHDFS(path, Paths.PREPROCESSED_DATA, conf);
+        boolean b = DataUploader.uploadToHDFS(path, PathsInHDFS.PREPROCESSED_DATA, conf);
         File f = new File(path);
         if(f.exists()) {
             System.out.println("localFile exist");

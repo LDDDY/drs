@@ -2,14 +2,13 @@ package org.example.drs.index;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
-import org.apache.hadoop.io.DoubleWritable;
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.example.drs.shared.ConfigurationBuilder;
-import org.example.drs.shared.Paths;
+import org.example.drs.shared.PathsInHDFS;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -34,8 +33,8 @@ public class TermFrequencyTest {
         jobTF.setOutputKeyClass(Text.class);
         jobTF.setOutputValueClass(Text.class);
 
-        FileInputFormat.addInputPath(jobTF, new Path(Paths.PREPROCESSED_DATA));
-        FileOutputFormat.setOutputPath(jobTF, new Path(Paths.TF_OUTPUT));
+        FileInputFormat.addInputPath(jobTF, new Path(PathsInHDFS.PREPROCESSED_DATA));
+        FileOutputFormat.setOutputPath(jobTF, new Path(PathsInHDFS.TF_OUTPUT));
 
         System.exit(jobTF.waitForCompletion(true)?0:1);
     }

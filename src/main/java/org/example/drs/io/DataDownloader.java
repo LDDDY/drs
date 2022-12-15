@@ -12,7 +12,6 @@ public class DataDownloader {
      * @param hdfsPath HDFS目录
      * @param conf 配置
      * @return 下载成功返回true，失败返回false
-     * @throws IOException
      */
     public static boolean downloadFromHDFS(String localPath, String hdfsPath, Configuration conf)
             throws IOException {

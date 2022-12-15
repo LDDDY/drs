@@ -1,8 +1,14 @@
 package org.example.drs.index;
 
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.Mapper;
 import org.apache.hadoop.mapreduce.Reducer;
+import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
+import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
+import org.example.drs.shared.PathsInHDFS;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -17,7 +23,6 @@ public class Weighting {
 
         /**
          * map
-         * @param key default
          * @param value ("word", "remainingPart")
          *              remainingPart: TF_OUTCOME "docIdentifier,TF" or IDF_OUTCOME ",IDF"
          * @param context key-out: "word"
@@ -57,7 +62,7 @@ public class Weighting {
                 String[] remainingPart = val.toString().trim().split(",");
                 if(remainingPart.length == 2) {
                     if(remainingPart[0].equals("")) {
-                        IDF = Double.valueOf(remainingPart[1]);
+                        IDF = Double.parseDouble(remainingPart[1]);
                     } else {
                         doc_tf.put(remainingPart[0], Double.valueOf(remainingPart[1]));
                     }
@@ -71,5 +76,27 @@ public class Weighting {
                 context.write(new Text(docIdentifier), new Text(valueOut));
             }
         }
+    }
+
+    public static boolean runTFIDFCalculator(Configuration conf) throws IOException, InterruptedException, ClassNotFoundException {
+
+        Job jobWeighting = Job.getInstance(conf);
+
+        jobWeighting.setJarByClass(Weighting.class);
+        jobWeighting.setMapperClass(Weighting.WeightingMapper.class);
+        jobWeighting.setReducerClass(Weighting.WeightingReducer.class);
+
+        jobWeighting.setMapOutputKeyClass(Text.class);
+        jobWeighting.setMapOutputValueClass(Text.class);
+
+        jobWeighting.setOutputKeyClass(Text.class);
+        jobWeighting.setOutputValueClass(Text.class);
+
+        FileInputFormat.addInputPath(jobWeighting, new Path(PathsInHDFS.TF_OUTCOME));
+        FileInputFormat.addInputPath(jobWeighting, new Path(PathsInHDFS.IDF_OUTCOME));
+
+        FileOutputFormat.setOutputPath(jobWeighting, new Path(PathsInHDFS.TF_IDF_OUTPUT));
+
+        return jobWeighting.waitForCompletion(true);
     }
 }

@@ -15,7 +15,6 @@ public class DataUploader {
      * @param targetPath 上传至HDFS的目标位置
      * @param conf 配置
      * @return 上传成功返回true，失败返回false
-     * @throws IOException
      */
     public static boolean uploadToHDFS(String localPath, String targetPath, Configuration conf)
             throws IOException {
