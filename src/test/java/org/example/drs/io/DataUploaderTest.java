@@ -1,8 +1,8 @@
-package org.example.io;
+package org.example.drs.io;
 
 
 import org.apache.hadoop.conf.Configuration;
-import org.example.shared.Paths;
+import org.example.drs.shared.Paths;
 import org.junit.Test;
 import org.junit.runner.JUnitCore;
 import org.junit.runner.Result;

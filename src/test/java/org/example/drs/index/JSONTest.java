@@ -1,4 +1,4 @@
-package org.example.index;
+package org.example.drs.index;
 
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;

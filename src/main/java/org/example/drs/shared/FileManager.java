@@ -1,4 +1,4 @@
-package org.example.shared;
+package org.example.drs.shared;
 
 import java.io.File;
 import java.io.IOException;

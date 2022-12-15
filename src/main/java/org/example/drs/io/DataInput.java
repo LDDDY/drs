@@ -1,4 +1,4 @@
-package org.example.io;
+package org.example.drs.io;
 
 import com.alibaba.fastjson2.JSONObject;
 import java.io.*;
@@ -9,16 +9,15 @@ import java.util.Map;
 
 public class DataInput {
 
-    private static DataInput singletonDataInput = null;
-    private String datasetPath;
+//    private static DataInput singletonDataInput = null;
+    private static String datasetPath;
+    private static int count = 0;
 
-    private DataInput(String dataPath) {
-        this.datasetPath = dataPath;
-    }
+//    private DataInput(String dataPath) {
+//        this.datasetPath = dataPath;
+//    }
 
-    private int count = 0;
-
-    public void writeJson(String jsonPath, Map<String, Object> fileMap, boolean flag) throws Exception{
+    public static void writeJson(String jsonPath, Map<String, Object> fileMap, boolean flag) throws Exception{
         String data = new JSONObject(fileMap).toString();
         File jsonFile = new File(jsonPath);
         if(!jsonFile.exists()){
@@ -31,7 +30,7 @@ public class DataInput {
         bufferedWriter.close();
     }
 
-    public List<Map<String,Object>> getFileMap() throws Exception{
+    public static List<Map<String,Object>> getFileMap() throws Exception{
         File file = new File(datasetPath);
         File[] fileList = file.listFiles();
         List<Map<String,Object>> fileMaps = new ArrayList<>();
@@ -73,24 +72,31 @@ public class DataInput {
         return fileMaps;
     }
 
-    public int getCount() {
+    /**
+     * 获取原数据集的文档总数
+     * @return 文档总数
+     */
+    public static int getCount() {
         return count;
     }
 
-    public static DataInput getInstance(String dataPath, String outPath) throws Exception {
+    /**
+     * 数据预处理
+     * @param dataPath 原数据即路径
+     * @param outPath 输出预处理文件的路径
+     * @return 原数据集的文档总数
+     * @throws Exception
+     */
+    public static int preprocess(String dataPath, String outPath) throws Exception {
 
-        if(singletonDataInput == null) {
-            singletonDataInput = new DataInput(dataPath);
-        }
-
-        List<Map<String,Object>> fileMaps=singletonDataInput.getFileMap();
+        List<Map<String,Object>> fileMaps=getFileMap();
         int counter = 0;
         File jsonFile = new File(outPath);
         for (Map<String,Object> fileMap:fileMaps){
-            singletonDataInput.writeJson(jsonFile.getAbsolutePath(),fileMap,true);
+            writeJson(jsonFile.getAbsolutePath(),fileMap,true);
             counter++;
         }
-        singletonDataInput.count = counter;
-        return singletonDataInput;
+        count = counter;
+        return count;
     }
 }
