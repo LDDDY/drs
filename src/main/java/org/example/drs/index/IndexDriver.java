@@ -3,7 +3,6 @@ package org.example.drs.index;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
-import org.example.drs.io.DataInput;
 import org.example.drs.io.DataUploader;
 import org.example.drs.shared.ConfigurationBuilder;
 import org.example.drs.shared.PathsInHDFS;
@@ -38,7 +37,7 @@ public class IndexDriver {
         String preprocessedDataPath = dataset.getPath() + "/preprocessedData";
 
         // 数据预处理
-        Values.NUM_OF_DOC = DataInput.preprocess(localInputPath, preprocessedDataPath);
+        Values.num_of_docs = PerProcessor.preprocess(localInputPath, preprocessedDataPath);
 
         // 上传到HDFS
         boolean uploaded = DataUploader.uploadToHDFS(preprocessedDataPath, PathsInHDFS.PREPROCESSED_DATA, conf);

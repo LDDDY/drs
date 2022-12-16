@@ -16,4 +16,6 @@ public class PathsInHDFS {
     public static final String DOC_VECTOR_OUTCOME = "drs/output/doc_vec/part-r-00000";
 
     public static final String SIMILARITY_OUTPUT = "drs/output/similarity";
+    public static final String SIMILARITY_OUTCOME = "drs/output/similarity/part-r-00000";
+
 }

@@ -65,7 +65,7 @@ public class InverseDocumentFrequency {
             for(IntWritable val: values) {
                 docCount += val.get();
             }
-            double IDF = Math.log( Values.NUM_OF_DOC / (1.0 + docCount) );
+            double IDF = Math.log( Values.num_of_docs / Double.valueOf(docCount) );
             String valueOut = "," + IDF;
             context.write(key, new Text(valueOut));
         }

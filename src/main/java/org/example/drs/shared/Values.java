@@ -1,5 +1,5 @@
 package org.example.drs.shared;
 
 public class Values {
-    public static int NUM_OF_DOC = 2225;
+    public static int num_of_docs = 0;
 }

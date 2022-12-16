@@ -8,6 +8,6 @@ import java.io.IOException;
 public class DownloadTest {
     public static void main(String[] args) throws IOException {
         ConfigurationBuilder cb = new ConfigurationBuilder();
-        DataDownloader.downloadFromHDFS("outcome", PathsInHDFS.DOC_VECTOR_OUTCOME, cb.getConf());
+        DataDownloader.downloadFromHDFS("outcome", PathsInHDFS.SIMILARITY_OUTCOME, cb.getConf());
     }
 }
